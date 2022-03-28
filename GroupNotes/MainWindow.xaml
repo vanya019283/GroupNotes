@@ -1,0 +1,159 @@
+﻿<Window x:Class="GroupNotes.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GroupNotes"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
+    <DockPanel>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Width="300" DockPanel.Dock="Left">
+
+                <Button x:Name="LuftDocButton0" Margin="10,10,10,0" Click="LuftDocButton0_Click" >
+                    <Grid Margin="0" Width="230">
+                        <TextBlock HorizontalAlignment="Center">Сегодня</TextBlock>
+                        <TextBlock x:Name="CountNToday" Text="" HorizontalAlignment="Right"/>
+                    </Grid>
+                </Button>
+
+                <Button x:Name="LeftDocButton1" Margin="10,10,10,0" Click="LeftDocButton1_Click" >
+                    <Grid Margin="0" Width="230">
+                        <TextBlock HorizontalAlignment="Center">Предстоящие</TextBlock>
+                        <TextBlock x:Name="CountNComing" Text="" HorizontalAlignment="Right"/>
+                    </Grid>
+                </Button>
+                <GroupBox x:Name="LeftDocGB1" Margin="10,0,10,0" Visibility="Collapsed">
+                    <StackPanel>
+                        <Label Content="Дата с:"/>
+                        <DatePicker x:Name="LeftDocGB1DateStart"/>
+                        <Label Content="Дата по:"/>
+                        <DatePicker x:Name="LeftDocGB1DateEnd"/>
+                        <Button Content="Показать" Width="200" Height="30" Margin="0,10,0,10" Click="Button_Click_1"/>
+                    </StackPanel>
+                </GroupBox>
+                <Button x:Name="LeftDocButton2" Content="Группы" Margin="10,10,10,0" Click="LeftDocButton2_Click" />
+                <GroupBox x:Name="LeftDocGB2" Margin="10,0,10,0" Visibility="Collapsed">
+                    <StackPanel>
+                        <GroupBox Header="Группы пользователя:" Margin="10,0,10,0">
+                            <ListBox x:Name="LeftDocLB" SelectionChanged="LeftDocLB_SelectionChanged">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <WrapPanel>
+                                            <Label Background="{Binding Path = Color}" Width="15" Height="15"/>
+                                            <Label Content=" "/>
+                                            <Label Content="{Binding Path = Name}"/>
+                                            <Label Content=" = "/>
+                                            <Label Content="{Binding Path = Count}"/>
+                                        </WrapPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </GroupBox>
+                        <GroupBox Header="Добавление групп:" Margin="10,0,10,0">
+                            <StackPanel>
+                                <materialDesign:ColorPicker x:Name="LeftGroupColor" Color="Red"/>
+                                <Label Content="Название группы:"/>
+                                <TextBox x:Name="LeftGroupName" />
+                                <Button Content="Добавить" Width="200" Height="30" Margin="0,10,0,10" Click="Button_Click"/>
+                            </StackPanel>
+                        </GroupBox>
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+        </ScrollViewer>
+        <GroupBox Header="Заметки пользователя:">
+            <Grid>
+                <Grid.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="FontWeight" Value="DemiBold"/>
+                        <Setter Property="Margin" Value="4"/>
+                    </Style>
+                </Grid.Resources>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <ListBox x:Name="RightListBox" Grid.ColumnSpan="5" Grid.RowSpan="5">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <WrapPanel>
+                                    <Label Content="{Binding Path = DateComplet}"/>
+                                    <CheckBox Content="Выполнено | " IsChecked="{Binding Path = Complet}" Click="CheckBox_Click"/>
+                                    <Label Background="{Binding Path = Color}" Width="15" Height="15"/>
+                                    <Label Content="{Binding Path = Name}"/>
+                                    <Label Content="| Cоздана: "/>
+                                    <Label Content="{Binding Path = DateCreate}"/>
+                                </WrapPanel>
+
+                                <materialDesign:Card Padding="5" Margin="5">
+                                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                                        <TextBlock Text="{Binding Path = Text}"/>
+                                    </ScrollViewer>
+                                </materialDesign:Card>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Button x:Name="RightButtonAdd" Width="40" Height="40" Margin="0" Padding="0" Grid.Column="4" Grid.Row="4" Click="RightButtonAdd_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                    <materialDesign:PackIcon Kind="Plus" Width="40" Height="40"></materialDesign:PackIcon>
+                </Button>
+                <Button x:Name="RightButtonSave" Width="40" Height="40" Margin="0" Padding="0" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Bottom" Visibility="Collapsed" Click="RightButtonSave_Click">
+                    <materialDesign:PackIcon Kind="DatabaseAdd" Width="40" Height="40"></materialDesign:PackIcon>
+                </Button>
+                <GroupBox Header="Новая заметка:" x:Name="RightGBAdd" Margin="10,0,10,0" Background="LightGray" Visibility="Collapsed" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="4">
+                    <StackPanel>
+                        <Label Content="Дата выполнения:"/>
+                        <DatePicker x:Name="RightGBAddDate"/>
+                        <Label Content="Группа заметки:"/>
+                        <ComboBox x:Name="RightGBAddGroup" PreviewMouseDown="RightGBAddGroup_PreviewMouseDown">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <WrapPanel>
+                                        <Label Background="{Binding Path = Color}" Width="15" Height="15"/>
+                                        <Label Content=" "/>
+                                        <Label Content="{Binding Path = Name}"/>
+                                    </WrapPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <materialDesign:Card Padding="5" Margin="5">
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                                <TextBox x:Name="RightGBAddText" Text=""/>
+                            </ScrollViewer>
+                        </materialDesign:Card>
+                        <WrapPanel HorizontalAlignment="Center">
+                            <Button x:Name="RightAddPanelButton" Width="50" Height="50" Margin="5" Padding="0" Grid.Column="4" Grid.Row="4" Click="RightAddPanelButton_Click">
+                                <materialDesign:PackIcon Kind="Check" Width="50" Height="50"></materialDesign:PackIcon>
+                            </Button>
+                            <Button x:Name="RightAddPanelButtonCancel" Width="50" Height="50" Margin="5" Padding="0" Grid.Column="4" Grid.Row="4" Click="RightAddPanelButtonCancel_Click">
+                                <materialDesign:PackIcon Kind="Cancel" Width="50" Height="50"></materialDesign:PackIcon>
+                            </Button>
+                        </WrapPanel>
+                    </StackPanel>
+                </GroupBox>
+            </Grid>
+        </GroupBox>
+    </DockPanel>
+</Window>

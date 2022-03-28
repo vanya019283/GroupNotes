@@ -1,0 +1,33 @@
+CREATE TABLE [dbo].[Groups] (
+    [Id]      INT           IDENTITY (1, 1) NOT NULL,
+    [Name]    NVARCHAR (50) NOT NULL,
+    [Color]   NVARCHAR (50) NOT NULL,
+    [Count]   INT           DEFAULT ((0)) NOT NULL,
+    [Id_User] INT           NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    FOREIGN KEY ([Id_User]) REFERENCES [dbo].[Users] ([Id])
+);
+
+
+CREATE TABLE [dbo].[Notes] (
+    [Id]          INT            IDENTITY (1, 1) NOT NULL,
+    [Text]        NVARCHAR (200) NOT NULL,
+    [DateCreate]  DATE           DEFAULT (getdate()) NOT NULL,
+    [DateComplet] DATETIME       NOT NULL,
+    [Complet]     BIT            DEFAULT ((0)) NOT NULL,
+    [Id_User]     INT            NOT NULL,
+    [Id_Group]    INT            NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    FOREIGN KEY ([Id_User]) REFERENCES [dbo].[Users] ([Id]),
+    FOREIGN KEY ([Id_Group]) REFERENCES [dbo].[Groups] ([Id])
+);
+
+
+CREATE TABLE [dbo].[Users] (
+    [Id]       INT            IDENTITY (1, 1) NOT NULL,
+    [FIO]      NVARCHAR (100) NOT NULL,
+    [Birthday] DATE           NOT NULL,
+    [Login]    NVARCHAR (50)  NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
